@@ -1,0 +1,26 @@
+version: '3.8'
+
+services:
+  weaviate:
+    image: semitechnologies/weaviate:latest
+    ports:
+      - "8080:8080"
+    environment:
+      - QUERY_DEFAULTS_LIMIT=20
+      - AUTHENTICATION_ANONYMOUS_ACCESS_ENABLED=false
+      - AUTHENTICATION_BASIC_ENABLED=true
+      - AUTHENTICATION_BASIC_USERS=${BASIC_AUTH_USERS}
+      - PERSISTENCE_DATA_PATH=/var/lib/weaviate
+    volumes:
+      - ${WEAVIATE_DATA_PATH}:/var/lib/weaviate
+    env_file:
+      - .env
+
+  weaviate-ui:
+    image: naaive/weaviate-ui:latest
+    ports:
+      - "7777:7777"
+    environment:
+      - WEAVIATE_URL=http://weaviate:8080
+      - WEAVIATE_USERNAME=user1
+      - WEAVIATE_PASSWORD=password1
