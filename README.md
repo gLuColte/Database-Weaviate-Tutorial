@@ -1,3 +1,5 @@
+![Main Banner](./markdown-images/main-banner.png)
+
 # Database-Weaviate-Tutorial
 Welcome to the Weaviate Mastery Repository! This repository is your guide to mastering Weaviate, an open-source vector database that enables the creation of semantic search engines and AI applications. You'll explore various operations like creating, reading, updating, and deleting (CRUD) data using Weaviate with Python, all while leveraging Weaviate's capabilities for vector search and machine learning integration.
 
