@@ -1,29 +1,35 @@
-import requests
+import weaviate
 import json
 
-# Weaviate server URL
-WEAVIATE_URL = "http://localhost:8080/v1/objects"
+client = weaviate.connect_to_local(
+    host="localhost",  # Replace with your Weaviate Cloud URL
+    port=8080,
+    grpc_port=50051
+)
+
+imageObject = client.collections.get("ImageObject")
 
 def get_entry_by_uuid(entry_uuid):
     """Retrieve an entry from Weaviate by its UUID and save the details to a JSON file."""
-    url = f"{WEAVIATE_URL}/ImageObject/{entry_uuid}"
-    response = requests.get(url)
-    
-    if response.status_code == 200:
-        data = response.json()
-        
-        # Save the entry to a JSON file
+    try:
+        data_object = imageObject.query.fetch_object_by_id(
+            entry_uuid,
+            include_vector=True
+        )
+        output_object = {
+            "image_url": data_object.properties["image_url"],
+            "vector": data_object.vector["default"]
+        }
         with open('entry.json', 'w') as json_file:
-            json.dump(data, json_file, indent=2)
+            json.dump(output_object, json_file, indent=2)
         print("Entry saved to entry.json")
-    elif response.status_code == 404:
-        print(f"Entry with UUID {entry_uuid} not found. Status code: {response.status_code}")
-    else:
-        print(f"Failed to retrieve entry. Status code: {response.status_code}")
-        print("Response:", response.text)
+    except weaviate.exceptions.ObjectNotFoundException:
+        print(f"Entry with UUID {entry_uuid} not found.")
+    except Exception as e:
+        print(f"Failed to retrieve entry. Error: {str(e)}")
 
 if __name__ == "__main__":
     # Replace 'your_entry_uuid' with the actual UUID you want to retrieve
-    # entry_uuid = "01291672-d056-4cf1-bead-ed16a088bd25"
-    entry_uuid = "00535cef-d6f8-4c5c-be6f-b31969728667"
+    entry_uuid = "88cd04a1-9f47-4a46-a7af-23f5365779a7"
     get_entry_by_uuid(entry_uuid)
+    client.close()
