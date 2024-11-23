@@ -71,7 +71,7 @@ if __name__ == "__main__":
     if client.is_ready():
         print("Connected to Weaviate successfully.")
         for collectionName, collectionConfiguration in configuration.items():
-            properties = [Property(name=property["name"], data_type=WEAVIATE_DATA_TYPE_MAPPING[property["dataType"]]) for property in collectionConfiguration["properties"] ]
+            properties = [Property(name=property["name"], data_type=WEAVIATE_DATA_TYPE_MAPPING[property["dataType"]]) for property in collectionConfiguration["properties"] if property["name"] not in ["uuid", "similarityVector"]]
             create_collection(collectionName, properties)
     else:
         print("Failed to connect to Weaviate.")

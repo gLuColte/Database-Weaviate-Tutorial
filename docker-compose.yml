@@ -19,5 +19,3 @@ services:
       - "7777:7777"
     environment:
       - WEAVIATE_URL=http://weaviate:8080
-      - WEAVIATE_USERNAME=user1
-      - WEAVIATE_PASSWORD=password1

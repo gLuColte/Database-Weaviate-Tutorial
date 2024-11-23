@@ -1,25 +1,28 @@
 {
-    "RandomObject":{
+    "CategoriesObject":{
         "properties": [
-            {"name": "imageUrl", "dataType": "text"},
             {"name": "similarityVector", "dataType": "numberArray"},
             {"name": "uuid", "dataType": "text"}
         ]
     },
-    "SuperObject":{
+    "ColorObject":{
         "properties": [
-            {"name": "imageUrl", "dataType": "text"},
-            {"name": "randomTest", "dataType": "text"},
             {"name": "similarityVector", "dataType": "numberArray"},
             {"name": "uuid", "dataType": "text"}
         ]
     },
-    "DescriptionObject":{
+    "StyleObject":{
         "properties": [
-            {"name": "imageUrl", "dataType": "text"},
-            {"name": "description", "dataType": "text"},
             {"name": "similarityVector", "dataType": "numberArray"},
             {"name": "uuid", "dataType": "text"}
+        ]
+    },
+    "ItemObject":{
+        "properties": [
+            {"name": "similarityVector", "dataType": "numberArray"},
+            {"name": "uuid", "dataType": "text"},
+            {"name": "title", "dataType": "text"},
+            {"name": "description", "dataType": "text"}
         ]
     }
 }

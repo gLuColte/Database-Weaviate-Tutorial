@@ -34,10 +34,10 @@ def generate_item_properties(properties, vectorSize, baseVector=None):
     def handle_similarity_vector():
         return generate_similar_vector(baseVector) if baseVector is not None else generate_random_vector(vectorSize)
     
-    def handle_random_test():
+    def handle_title():
         fake = Faker()
         # Return random generated string
-        return fake.sentence(nb_words=10)
+        return fake.sentence(nb_words=5)
     
     def handle_description():
         fake = Faker()
@@ -46,10 +46,10 @@ def generate_item_properties(properties, vectorSize, baseVector=None):
 
     # Define the switch dictionary
     switch = {
-        "imageUrl": handle_image_url,
         "uuid": handle_uuid,
+        "title": handle_title,
+        "imageUrl": handle_image_url,
         "similarityVector": handle_similarity_vector,
-        "randomTest": handle_random_test,
         "description": handle_description
     }
 

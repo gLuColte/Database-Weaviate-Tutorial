@@ -20,7 +20,6 @@ from weaviate.classes.query import MetadataQuery
 # Load environment variables from .env file
 load_dotenv('../.env')
 
-
 parser = argparse.ArgumentParser(description='Retrieve similar entries from Weaviate by its UUID.')
 parser.add_argument('--inputJson', type=str, default="entry.json", help='The path to the entry JSON file.')
 parser.add_argument('--configurationJsonc', type=str, default="collectionConfig.jsonc", help='The path to the configuration JSONC file.')
