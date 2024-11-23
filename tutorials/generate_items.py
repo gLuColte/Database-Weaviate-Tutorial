@@ -1,9 +1,9 @@
 
 ######################################################################
-# post_entry.py
+# generate_items.py
 # Completed: 23/11/2024
 # Author: Gary Lu
-# Description: This script creates and insert entries in Weaviate one by one.
+# Description: This script contains functions for generating items with random values.
 ######################################################################  
 import uuid
 import random
