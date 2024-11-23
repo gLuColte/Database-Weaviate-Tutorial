@@ -1,5 +1,7 @@
 {
+    // Collection Name
     "CategoriesObject":{
+        // Properties in the collection
         "properties": [
             {"name": "similarityVector", "dataType": "numberArray"},
             {"name": "uuid", "dataType": "text"}

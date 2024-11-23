@@ -50,13 +50,56 @@ Here’s a simple Docker Compose setup for Weaviate:
 version: '3.7'
 services:
   weaviate:
-    image: semitechnologies/weaviate:latest
-    container_name: weaviate
-    environment:
-      - QUERY_DEFAULTS=10
-      - AUTHENTICATION_ANONYMOUS_ACCESS_ENABLED=true
-      - WEAVIATE_LOG_LEVEL=info
+    image: cr.weaviate.io/semitechnologies/weaviate:1.27.2
     ports:
       - "8080:8080"
-    restart: always
+      - "50051:50051"
+    environment:
+      - PERSISTENCE_DATA_PATH=/var/lib/weaviate
+    volumes:
+      - ${WEAVIATE_DATA_PATH}:/var/lib/weaviate
+    env_file:
+      - .env
 ```
+
+Weaviate UI is included in the docker-compose file for easier visualization.
+
+## Tutorials
+
+Start with configuring collectionConfig.jsonc in tutorials folder, which defines the schema of the collections.
+
+### 1. Create Collections
+
+Run the following command to create collections:
+```terminal
+python tutorials/create_collections.py
+```
+
+### 2. Insert Entries
+
+Run the following command to insert entries:
+```terminal
+python tutorials/insert_entries.py
+```
+Or use the following to insert one entry at a time:
+```terminal
+python tutorials/insert_entry.py
+```
+
+### 3. Get Single Entry
+
+Run the following command to get a single entry:
+```terminal
+python tutorials/get_single_entry.py
+```
+
+This will generate an entry.json file in the folder.
+
+### 4. Get Similar Entries
+
+Run the following command to get similar entries:
+```terminal
+python tutorials/get_similar_entries.py
+```
+
+This will generate a similar_entries.csv file in the folder.
