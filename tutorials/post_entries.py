@@ -14,6 +14,7 @@ import commentjson
 from faker import Faker
 from dotenv import load_dotenv
 from generate_items import generate_random_vector, generate_similar_vector, generate_item_properties
+
 ######################################################################
 # Load environment variables
 ######################################################################

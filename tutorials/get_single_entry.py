@@ -1,8 +1,8 @@
 ######################################################################
-# post_entries.py
+# get_single_entry.py
 # Completed: 23/11/2024
 # Author: Gary Lu
-# Description: This script creates and insert entries in Weaviate in batch.
+# Description: This script retrieves a single entry from Weaviate by its UUID.
 ######################################################################  
 
 import os
@@ -19,8 +19,8 @@ from dotenv import load_dotenv
 # Load environment variables from .env file
 load_dotenv('../.env')
 
-parser = argparse.ArgumentParser(description='Create entries in Weaviate.')
-parser.add_argument('--collectionName', type=str, required=True, help='The name of the collection to create entries in.')
+parser = argparse.ArgumentParser(description='Retrieve a single entry from Weaviate by its UUID.')
+parser.add_argument('--collectionName', type=str, required=True, help='The name of the collection to retrieve the entry from.')
 parser.add_argument('--outputJson', type=str, default="entry.json", help='The path to the entry JSON file.')
 parser.add_argument('--uuid', type=str, help='The UUID of the entry to retrieve.')
 
@@ -49,6 +49,8 @@ def get_entry_by_uuid(collectionClient, entryUuid, filePath=None):
         dataObject = {}
         for key, value in rawObject.properties.items():
             dataObject[key] = value
+        # Collection Name
+        dataObject["collectionName"] = collectionClient.name
         # Get Metadata
         # Where creation_time=datetime.datetime(2024, 11, 23, 4, 35, 41, 399000, tzinfo=datetime.timezone.utc), last_update_time=datetime.datetime(2024, 11, 23, 4, 35, 41, 399000, tzinfo=datetime.timezone.utc)
         dataObject["metadata"] = {
