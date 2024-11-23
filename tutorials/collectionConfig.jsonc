@@ -1,0 +1,9 @@
+{
+    "RandomObject":{
+        "properties": [
+            {"name": "imageUrl", "dataType": "text"},
+            {"name": "similarityVector", "dataType": "numberArray"},
+            {"name": "uuid", "dataType": "text"}
+        ]
+    }
+}

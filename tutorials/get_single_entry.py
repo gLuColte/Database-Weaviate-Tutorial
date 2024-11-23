@@ -1,5 +1,6 @@
 import weaviate
 import json
+import argparse
 
 client = weaviate.connect_to_local(
     host="localhost",  # Replace with your Weaviate Cloud URL
@@ -29,7 +30,9 @@ def get_entry_by_uuid(entry_uuid):
         print(f"Failed to retrieve entry. Error: {str(e)}")
 
 if __name__ == "__main__":
-    # Replace 'your_entry_uuid' with the actual UUID you want to retrieve
-    entry_uuid = "88cd04a1-9f47-4a46-a7af-23f5365779a7"
-    get_entry_by_uuid(entry_uuid)
+    parser = argparse.ArgumentParser(description='Retrieve a Weaviate entry by UUID.')
+    parser.add_argument('--uuid', type=str, required=True, help='The UUID of the entry to retrieve.')
+    args = parser.parse_args()
+
+    get_entry_by_uuid(args.uuid)
     client.close()
