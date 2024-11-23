@@ -20,7 +20,7 @@ load_dotenv('../.env')
 
 # Parse Setup
 parser = argparse.ArgumentParser(description='Create a collection in Weaviate.')
-parser.add_argument('--configurationJsonc', type=str, required=True, help='The path to the configuration JSONC file.')
+parser.add_argument('--configurationJsonc', type=str, default="collectionConfig.jsonc", help='The path to the configuration JSONC file.')
 
 # Parse the arguments
 args = parser.parse_args()

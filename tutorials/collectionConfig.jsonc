@@ -5,5 +5,21 @@
             {"name": "similarityVector", "dataType": "numberArray"},
             {"name": "uuid", "dataType": "text"}
         ]
+    },
+    "SuperObject":{
+        "properties": [
+            {"name": "imageUrl", "dataType": "text"},
+            {"name": "randomTest", "dataType": "text"},
+            {"name": "similarityVector", "dataType": "numberArray"},
+            {"name": "uuid", "dataType": "text"}
+        ]
+    },
+    "DescriptionObject":{
+        "properties": [
+            {"name": "imageUrl", "dataType": "text"},
+            {"name": "description", "dataType": "text"},
+            {"name": "similarityVector", "dataType": "numberArray"},
+            {"name": "uuid", "dataType": "text"}
+        ]
     }
 }

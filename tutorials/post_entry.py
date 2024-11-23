@@ -1,52 +1,77 @@
-import weaviate
-import random
-import uuid
+######################################################################
+# post_entry.py
+# Completed: 23/11/2024
+# Author: Gary Lu
+# Description: This script creates and insert entries in Weaviate one by one.
+######################################################################  
 import os
+import uuid
+import random
+import argparse
+import weaviate
+import commentjson
+from faker import Faker
+from dotenv import load_dotenv
+from generate_items import generate_random_vector, generate_similar_vector, generate_item_properties
+######################################################################
+# Load environment variables
+######################################################################
+# Load environment variables from .env file
+load_dotenv('../.env')
 
-client = weaviate.connect_to_local(
-    host="localhost",  # Replace with your Weaviate Cloud URL
-    port=8080,
-    grpc_port=50051
-)
+# Parse Setup
+parser = argparse.ArgumentParser(description='Create entries in Weaviate.')
+parser.add_argument('--configurationJsonc', type=str, default="collectionConfig.jsonc", help='The path to the configuration JSONC file.')
+parser.add_argument('--collectionName', type=str, required=True, help='The name of the collection to create entries in.')
+parser.add_argument('--numberOfItems', type=int, default=1000, help='Number of items to create.')
+parser.add_argument('--vectorSize', type=int, default=256, help='Size of the vector.')
+parser.add_argument('--useSimilarVectors', type=bool, default=True, help='Flag to use similar vectors.')
 
-imageObject = client.collections.get("ImageObject")
+# Parse the arguments
+args = parser.parse_args()
 
-def generate_random_vector(size):
-    """Generate a random vector with 'size' dimensions."""
-    return [random.random() for _ in range(size)]
-
-def generate_similar_vector(base_vector, variation=0.1):
-    """Generate a vector similar to the base vector with slight variations."""
-    return [value + random.uniform(-variation, variation) for value in base_vector]
-
-def post_image_object(category_similarity):
-    generated_uuid = str(uuid.uuid4())
-    image_url = f"http://example.com/image_{generated_uuid}.jpg"
-    data_object = {
-        "image_url": image_url
-    }
-    inserted_uuid = imageObject.data.insert(
-        uuid=generated_uuid,
-        properties=data_object,
-        vector=category_similarity
-    )
-    
-    print(f"Successfully posted image object with UUID {inserted_uuid}.")
+######################################################################
+# Functions
+######################################################################
 
 if __name__ == "__main__":
-    num_items = 1000  # Number of items to create
-    vector_size = 256  # Assuming the vector size is 256
-    use_similar_vectors = True  # Set this flag to True to use similar vectors
+    # Retrieve environment variables
+    host = os.getenv("WEAVIATE_HOST", "localhost")
+    port = int(os.getenv("WEAVIATE_PORT", 8080))
+    grpcPort = int(os.getenv("WEAVIATE_GRPC_PORT", 50051))
+
+    # Connect to Weaviate
+    client = weaviate.connect_to_local(
+        host=host,
+        port=port,
+        grpc_port=grpcPort
+    )
+    
+    # Get collection client
+    collectionClient = client.collections.get(args.collectionName)
+    
+    # Read and parse the JSONC file
+    with open(args.configurationJsonc, "r") as file:
+        configuration = commentjson.load(file)
+
+    # Check if collection name in Jsonc
+    if args.collectionName not in configuration:
+        raise ValueError(f"Collection name {args.collectionName} not found in the JSONC file.")
+
+    # Read Properties from collection configuration
+    properties = configuration[args.collectionName]["properties"]
 
     # Base vector for generating similar vectors
-    base_vector = generate_random_vector(vector_size)
+    baseVector = generate_random_vector(args.vectorSize)
 
-    for i in range(num_items):        
-        if use_similar_vectors:
-            category_similarity = generate_similar_vector(base_vector)
-        else:
-            category_similarity = generate_random_vector(vector_size)
-        
-        post_image_object(category_similarity)
+    for i in range(args.numberOfItems):        
+        itemProperties = generate_item_properties(properties, args.vectorSize, baseVector)
+        collectionClient.data.insert(
+            uuid=itemProperties["uuid"],
+            # Take out uuid/similarityVector
+            properties={k: v for k, v in itemProperties.items() if k not in ["uuid", "similarityVector"]},
+            vector=itemProperties["similarityVector"]
+        )
+        print(f"Successfully posted image object with UUID {itemProperties['uuid']}.")
 
-client.close()
+    client.close()
