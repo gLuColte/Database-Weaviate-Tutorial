@@ -42,6 +42,13 @@ sudo apt-get update
 sudo apt-get install docker-compose-plugin
 ```
 
+### Python Installation
+Follow [Python Installation](https://www.python.org/downloads/) to install Python. Then install the required packages:
+
+```terminal
+pip install -r requirements.txt
+```
+
 ### Weaviate Installation
 Follow the steps in the Weaviate documentation for installing Weaviate via Docker Compose.
 
